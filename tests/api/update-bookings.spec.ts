@@ -1,17 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/api-fixture';
 
-test('update an existing booking', async ({ request }) => {
-
-  // Generate token
-  const authResponse = await request.post('/auth', {
-    data: {
-      username: 'admin',
-      password: 'password123'
-    }
-  });
-
-  const authBody = await authResponse.json();
-  const token = authBody.token;
+test('update an existing booking', async ({ request, authToken }) => {
 
   // Create booking
   const createResponse = await request.post('/booking', {
@@ -34,7 +23,7 @@ test('update an existing booking', async ({ request }) => {
   // Update booking
   const updateResponse = await request.put(`/booking/${bookingId}`, {
     headers: {
-      Cookie: `token=${token}`
+      Cookie: `token=${authToken}`
     },
     data: {
       firstname: 'James',
